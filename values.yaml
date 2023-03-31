@@ -1,0 +1,53 @@
+namespace: namespace
+appName: service
+
+image:
+  repository: repository/service
+  tag: <IMAGE_TAG>
+
+deploy:
+  enabled: true
+  replicaCount: 2
+
+resources:
+  limits:
+    cpu: 600M
+    memory: 1Gi
+  requests:
+    cpu: 500m
+    memory: 512Mi
+
+probes:
+  liveness:
+    enabled: true
+    path: /actuator/health/readiness
+    initialDelaySeconds: 120
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 3
+    successThreshold: 1
+  readiness:
+    enabled: true
+    path: /actuator/health/readiness
+    initialDelaySeconds: 120
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 3
+    successThreshold: 1
+
+service:
+  enabled: true
+  type: ClusterIP
+  port: 80
+  targetPort: 8080
+
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 5
+  averageUtilization: 80
+
+ingress:
+  enabled: false
+
+env:
