@@ -8,10 +8,6 @@ metadata:
   namespace: {{ .Values.namespace }}
 spec:
   replicas: {{ .Values.deploy.replicaCount }}
-  strategy:
-    rollingUpdate:
-      maxUnavailable: 0
-      maxSurge: 1
   selector:
     matchLabels:
       {{- include "deploy.selectorLabels" . | nindent 6 }}
@@ -26,7 +22,7 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           ports:
-              - containerPort: {{ .Values.service.targetPort }}
+            - containerPort: {{ .Values.service.targetPort }}
           {{- with .Values.env }}
           env:
             {{- toYaml . | nindent 12 }}
