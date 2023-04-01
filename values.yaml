@@ -7,19 +7,19 @@ image:
 
 deploy:
   enabled: true
-  replicaCount: 2
+  replicaCount: 1
 
 resources:
   limits:
-    cpu: 600M
-    memory: 1Gi
+    cpu: 100m
+    memory: 128Mi
   requests:
-    cpu: 500m
-    memory: 512Mi
+    cpu: 100m
+    memory: 128Mi
 
 probes:
   liveness:
-    enabled: true
+    enabled: false
     path: /actuator/health/readiness
     initialDelaySeconds: 120
     periodSeconds: 10
@@ -27,7 +27,7 @@ probes:
     failureThreshold: 3
     successThreshold: 1
   readiness:
-    enabled: true
+    enabled: false
     path: /actuator/health/readiness
     initialDelaySeconds: 120
     periodSeconds: 10
@@ -42,7 +42,7 @@ service:
   targetPort: 8080
 
 autoscaling:
-  enabled: true
+  enabled: false
   minReplicas: 2
   maxReplicas: 5
   averageUtilization: 80
